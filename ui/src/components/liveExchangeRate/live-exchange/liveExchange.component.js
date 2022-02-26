@@ -5,6 +5,7 @@ import classes from "./live-exchange.module.css";
 import Counter from "../counter/counter.component";
 import ExchangeItem from "../exchange-item/exchangeItem.component";
 import AddCurrency from "../add-currency/addCurrency.component";
+import { getCurrencyRates } from "../../../services/currencies";
 
 const LiveExchange = () => {
   const [data, setData] = useState([]);
@@ -18,15 +19,6 @@ const LiveExchange = () => {
     { id: 4, numericCode: "978", code: "eur" },
   ]);
 
-  const getCurrencyData = (c) => {
-    fetch(`http://www.floatrates.com/daily/${c[0].code}.json`).then(
-      async (result) => {
-        const fResult = await result.json();
-        setData(fResult);
-      }
-    );
-  };
-
   const handleDelete = (numericCode) => {
     setDefaultData(
       defaultData.filter((item) => item.numericCode !== numericCode)
@@ -34,7 +26,9 @@ const LiveExchange = () => {
   };
 
   useEffect(() => {
-    getCurrencyData(defaultData);
+    getCurrencyRates(defaultData[0].code).then((data) => {
+      setData(data);
+    });
   }, [defaultData]);
 
   setInterval(() => {
