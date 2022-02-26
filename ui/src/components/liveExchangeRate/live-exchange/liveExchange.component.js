@@ -98,7 +98,7 @@ const LiveExchange = () => {
               />
             ))}
         </div>
-        {/* Currency Div which contain add currency btn and the counter */}
+
         <div className={classes.currencyDiv}>
           <AddCurrency
             editClick={editClick}
